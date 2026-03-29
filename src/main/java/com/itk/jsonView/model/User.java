@@ -8,6 +8,7 @@ import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.NotBlank;
 import lombok.Data;
 
 import java.util.List;
@@ -25,7 +26,8 @@ public class User {
     @JsonView(Views.UserSummary.class)
     private String name;
 
-    @Email
+    @Email(message = "Invalid email")
+    @NotBlank(message = "Email is required")
     @JsonView(Views.UserSummary.class)
     private String email;
 
