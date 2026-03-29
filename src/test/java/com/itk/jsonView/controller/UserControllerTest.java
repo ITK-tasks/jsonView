@@ -11,7 +11,10 @@ import org.springframework.boot.webmvc.test.autoconfigure.WebMvcTest;
 import org.springframework.context.annotation.Import;
 import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.web.servlet.MockMvc;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import tools.jackson.databind.ObjectMapper;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 
 import java.util.List;
 import java.util.UUID;
@@ -38,11 +41,14 @@ class UserControllerTest {
 
         Order order = new Order();
         order.setId(UUID.randomUUID());
-
         user.setOrders(List.of(order));
-
         given(userService.findAll()).willReturn(List.of(user));
-
+        mockMvc.perform(get("/users"))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$[0].id").exists())
+                .andExpect(jsonPath("$[0].name").value("John"))
+                .andExpect(jsonPath("$[0].email").value("john@mail.com"))
+                .andExpect(jsonPath("$[0].orders").doesNotExist());
     }
 
 }
