@@ -1,5 +1,7 @@
 package com.itk.jsonView.model;
 
+import com.fasterxml.jackson.annotation.JsonView;
+import com.itk.jsonView.views.Views;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
@@ -17,13 +19,17 @@ import java.util.UUID;
 public class User {
 
     @Id
+    @JsonView(Views.UserSummary.class)
     private UUID id;
 
+    @JsonView(Views.UserSummary.class)
     private String name;
 
     @Email
+    @JsonView(Views.UserSummary.class)
     private String email;
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
+    @JsonView(Views.UserDetails.class)
     private List<Order> orders;
 }
