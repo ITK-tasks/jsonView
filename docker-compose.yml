@@ -18,6 +18,29 @@ services:
       interval: 5s
       timeout: 5s
       retries: 5
+    networks:
+        - app-network
+  app:
+    build: .
+    container_name: json_view_app
+    restart: unless-stopped
+    ports:
+      - "8080:8080"
+    environment:
+      SPRING_PROFILES_ACTIVE: docker
+      SPRING_DATASOURCE_URL: jdbc:postgresql://db:5432/test_db
+      SPRING_DATASOURCE_USERNAME: test_user
+      SPRING_DATASOURCE_PASSWORD: test_pass
+      SPRING_JPA_HIBERNATE_DDL_AUTO: validate
+    depends_on:
+      db:
+        condition: service_healthy
+    networks:
+      - app-network
+
+networks:
+    app-network:
+      driver: bridge
 
 volumes:
   pg_data:
