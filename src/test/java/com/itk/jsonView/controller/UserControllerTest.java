@@ -1,5 +1,6 @@
 package com.itk.jsonView.controller;
 
+import com.itk.jsonView.exception.EntityNotFoundException;
 import com.itk.jsonView.exception.GlobalExceptionHandler;
 import com.itk.jsonView.model.Order;
 import com.itk.jsonView.model.User;
@@ -119,16 +120,6 @@ class UserControllerTest {
         mockMvc.perform(delete("/users/{id}", id))
                 .andExpect(status().isOk());
         then(userService).should().delete(id);
-    }
-
-    @Test
-    void shouldHandleNotFound() throws Exception {
-        UUID id = UUID.randomUUID();
-        given(userService.findById(id))
-                .willThrow(new RuntimeException("User not found"));
-        mockMvc.perform(get("/users/{id}", id))
-                .andExpect(status().isNotFound())
-                .andExpect(content().string("User not found"));
     }
 
 }

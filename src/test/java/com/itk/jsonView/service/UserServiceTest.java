@@ -87,4 +87,6 @@ class UserServiceTest {
         userService.delete(id);
         then(userRepository).should().deleteById(id);
     }
+
+
 }
